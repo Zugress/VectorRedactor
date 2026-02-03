@@ -8,6 +8,7 @@ namespace VectorEditor
         public Size Size { get; set; }
         public Color FillColor { get; set; } = Color.Blue;
         public bool IsSelected { get; set; } = false;
+        public Point? MoveOffset { get; set; } = null;
 
         public abstract void Draw(Graphics graphics);
         public abstract bool Contains(Point point);

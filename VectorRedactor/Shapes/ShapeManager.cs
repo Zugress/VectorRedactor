@@ -7,38 +7,74 @@ namespace VectorEditor
     public class ShapeManager
     {
         private List<Shape> shapes = new List<Shape>();
+        private Shape selectedShape = null;
 
         public IEnumerable<Shape> Shapes => shapes;
+        public Shape SelectedShape => selectedShape;
 
         public void AddShape(Shape shape)
         {
             shapes.Add(shape);
         }
 
-        public void RemoveShape(Shape shape)
+        public void RemoveSelectedShape()
         {
-            shapes.Remove(shape);
+            if (selectedShape != null)
+            {
+                shapes.Remove(selectedShape);
+                selectedShape = null;
+            }
         }
 
         public void ClearSelection()
         {
-            foreach (var shape in shapes)
+            if (selectedShape != null)
             {
-                shape.IsSelected = false;
+                selectedShape.IsSelected = false;
+                selectedShape = null;
             }
         }
 
         public Shape SelectShape(Point point)
         {
-            var selected = shapes.LastOrDefault(s => s.Contains(point));
-
             ClearSelection();
-            if (selected != null)
+
+            selectedShape = shapes.LastOrDefault(s => s.Contains(point));
+
+            if (selectedShape != null)
             {
-                selected.IsSelected = true;
+                selectedShape.IsSelected = true;
             }
 
-            return selected;
+            return selectedShape;
+        }
+
+        public void StartMoving(Point startPoint)
+        {
+            if (selectedShape != null)
+            {
+                selectedShape.MoveOffset = new Point(
+                    startPoint.X - selectedShape.Location.X,
+                    startPoint.Y - selectedShape.Location.Y);
+            }
+        }
+
+        public void MoveSelectedShape(Point newPosition)
+        {
+            if (selectedShape != null && selectedShape.MoveOffset.HasValue)
+            {
+                selectedShape.Location = new Point(
+                    newPosition.X - selectedShape.MoveOffset.Value.X,
+                    newPosition.Y - selectedShape.MoveOffset.Value.Y);
+            }
+        }
+
+        public void FinishMoving()
+        {
+            if (selectedShape != null)
+            {
+                selectedShape.MoveOffset = null;
+            }
         }
 
         public void DrawAll(Graphics graphics)

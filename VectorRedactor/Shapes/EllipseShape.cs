@@ -13,9 +13,16 @@ namespace VectorEditor
 
             if (IsSelected)
             {
-                using (var pen = new Pen(Color.Black, 1) { DashPattern = new float[] { 2, 2 } })
+                using (var pen = new Pen(Color.Red, 2)
                 {
-                    graphics.DrawEllipse(pen, new Rectangle(Location, Size));
+                    DashPattern = new float[] { 3, 3 }
+                })
+                {
+                    graphics.DrawEllipse(pen,
+                        Location.X - 2,
+                        Location.Y - 2,
+                        Size.Width + 4,
+                        Size.Height + 4);
                 }
             }
         }

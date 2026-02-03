@@ -9,7 +9,7 @@ namespace VectorEditor
             Point[] points = new Point[]
             {
                 new Point(Location.X + Size.Width / 2, Location.Y),
-                new Point(Location.X, Location.Y + Size.Height),
+                new Point(Location.X, Location.Y + Size.Height), 
                 new Point(Location.X + Size.Width, Location.Y + Size.Height)
             };
 
@@ -20,9 +20,18 @@ namespace VectorEditor
 
             if (IsSelected)
             {
-                using (var pen = new Pen(Color.Black, 1) { DashPattern = new float[] { 2, 2 } })
+                using (var pen = new Pen(Color.Red, 2)
+                {
+                    DashPattern = new float[] { 3, 3 }
+                })
                 {
                     graphics.DrawPolygon(pen, points);
+
+                    graphics.DrawRectangle(pen,
+                        Location.X - 2,
+                        Location.Y - 2,
+                        Size.Width + 4,
+                        Size.Height + 4);
                 }
             }
         }
